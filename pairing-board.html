@@ -1,0 +1,335 @@
+<title>Pour & Pair</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky stepper-free single column. Principles up top, a three-step pairing tool (pick, match, build the board), sources at the bottom. */
+:root{
+  --bg:#f7f4f4; --surface:#ffffff; --surface2:#efe9ea; --ink:#2a1c23; --muted:#6d5a63; --line:#dccfd3;
+  --wine:#8a2144; --wine-ink:#ffffff; --wine-soft:#f3dfe6;
+  --cheese:#c98f12; --cheese-soft:#f7ecc9;
+  --good:#3f7a4d; --good-soft:#dcefe0; --warn:#a8402a; --warn-soft:#f7ddd6;
+  --display:'Fraunces',Georgia,serif; --body:'Figtree',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1a1217; --surface:#241a20; --surface2:#2e222a; --ink:#f3e9ed; --muted:#b5a2ab; --line:#43323b;
+  --wine:#e0728f; --wine-ink:#1a1217; --wine-soft:#44202e;
+  --cheese:#e4b23c; --cheese-soft:#443816;
+  --good:#7fc08e; --good-soft:#22392a; --warn:#ee9a85; --warn-soft:#472620;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1a1217; --surface:#241a20; --surface2:#2e222a; --ink:#f3e9ed; --muted:#b5a2ab; --line:#43323b;
+  --wine:#e0728f; --wine-ink:#1a1217; --wine-soft:#44202e;
+  --cheese:#e4b23c; --cheese-soft:#443816;
+  --good:#7fc08e; --good-soft:#22392a; --warn:#ee9a85; --warn-soft:#472620;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.6rem;font-weight:700}
+h3{font-size:1.1rem;font-weight:500}
+p{margin:0}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+header{padding-block:40px 24px;display:grid;gap:12px}
+header p{max-width:62ch;color:var(--muted);font-size:1.05rem}
+section{padding-block:28px;display:grid;gap:16px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.rule b{font-family:var(--display);font-size:1.05rem;font-weight:500}
+.rule .eg{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.strategy{display:flex;flex-wrap:wrap;gap:8px}
+.strategy span{background:var(--surface2);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.strategy b{font-weight:600}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:20px}
+@media(max-width:480px){.tool{padding:14px}}
+.seg{display:inline-flex;background:var(--surface2);border-radius:999px;padding:3px;justify-self:start}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 .9rem var(--body);padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--wine);color:var(--wine-ink)}
+button:focus-visible,.chip:focus-visible,.item:focus-visible,.match:focus-visible,a:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+.step{display:grid;gap:10px}
+.step-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.step-h .eyebrow{color:var(--wine)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 .92rem var(--body);padding:8px 14px;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:var(--wine)}
+.chip[aria-pressed="true"]{background:var(--wine-soft);border-color:var(--wine);font-weight:600}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid rgba(0,0,0,.25)}
+.about{background:var(--surface2);border-radius:10px;padding:12px 14px;font-size:.92rem;color:var(--muted)}
+.about b{color:var(--ink)}
+.matches{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.match{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:6px;cursor:pointer;color:var(--ink);font:inherit;min-width:0}
+.match:hover{border-color:var(--wine)}
+.match[aria-pressed="true"]{border:2px solid var(--wine);padding:13px;background:var(--wine-soft)}
+.match .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.match .nm{font-family:var(--display);font-weight:500;font-size:1.05rem}
+.match .why{font-size:.88rem;color:var(--muted)}
+.pill{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.pill.p3{background:var(--good-soft);color:var(--good)}
+.pill.p2{background:var(--cheese-soft);color:var(--ink)}
+.pill.p0{background:var(--warn-soft);color:var(--warn)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:16px;color:var(--muted);font-size:.95rem}
+.board{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:760px){.board{grid-template-columns:minmax(0,1fr)}}
+.cat{display:grid;gap:8px;margin-bottom:14px}
+.cat h4{margin:0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.items{display:flex;flex-wrap:wrap;gap:8px}
+.item{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 .9rem var(--body);padding:7px 12px;border-radius:8px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.item.rec{border-color:var(--cheese);background:var(--cheese-soft)}
+.item[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:var(--wine-ink)}
+.item .star{font-size:.7rem}
+.summary{position:sticky;top:12px;background:var(--surface2);border-radius:12px;padding:16px;display:grid;gap:10px;min-width:0}
+.summary h3{font-size:1.2rem}
+.sum-row{display:flex;gap:8px;align-items:center;font-size:.95rem}
+.sum-list{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.sum-list li{font-size:.92rem;display:grid;gap:1px;border-top:1px solid var(--line);padding-top:6px}
+.sum-list li span{color:var(--muted);font-size:.82rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--wine);background:var(--wine);color:var(--wine-ink);font:600 .9rem var(--body);padding:8px 14px;border-radius:8px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--wine)}
+.hint{font-size:.82rem;color:var(--muted)}
+.hint .key{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--cheese-soft);border:1px solid var(--cheese);vertical-align:-1px;margin-right:4px}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.tip{border-left:3px solid var(--cheese);padding:2px 0 2px 12px;font-size:.95rem}
+.sources ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:.92rem}
+.sources a{color:var(--wine)}
+.note{font-size:.88rem;color:var(--muted);max-width:75ch}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">A beginner's guide to wine and cheese</div>
+  <h1>Pour & Pair</h1>
+  <p>Learn the five ideas behind a good pairing, then pick a wine or a cheese from the Trader Joe's aisle, see what goes with it, and build the rest of the board.</p>
+</header>
+
+<section aria-labelledby="h-rules">
+  <h2 id="h-rules">The five ideas</h2>
+  <div class="rules" id="rules"></div>
+  <div class="strategy" aria-label="Three ways to pair">
+    <span><b>Match</b> intensity: big with big, delicate with delicate</span>
+    <span><b>Contrast</b>: acid or bubbles against cream, sweet against salt</span>
+    <span><b>Share</b> a flavor: nutty with nutty, earthy with earthy</span>
+  </div>
+</section>
+
+<section aria-labelledby="h-tool">
+  <h2 id="h-tool">Build a pairing</h2>
+  <div class="tool">
+    <div class="seg" role="group" aria-label="Start with">
+      <button id="m-wine" aria-pressed="true">Start with a wine</button>
+      <button id="m-cheese" aria-pressed="false">Start with a cheese</button>
+    </div>
+    <div class="step">
+      <div class="step-h"><span class="eyebrow" id="s1-l">Step 1</span><h3 id="s1-t">Pick a wine</h3></div>
+      <div class="chips" id="s1-chips"></div>
+      <div class="about" id="s1-about" hidden></div>
+    </div>
+    <div class="step">
+      <div class="step-h"><span class="eyebrow">Step 2</span><h3 id="s2-t">Choose a cheese</h3></div>
+      <div id="s2"><div class="empty">Pick one above and the best matches appear here, ranked.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-h"><span class="eyebrow">Step 3</span><h3>Fill out the board</h3></div>
+      <div id="s3"><div class="empty">Select a pairing in step 2 to see crackers, fruit, spreads and more that suit it.</div></div>
+    </div>
+  </div>
+  <p class="note">Wines are listed by style, with example labels where a source named one. Trader Joe's stock changes by store and season, so check the shelf for a close substitute in the same style.</p>
+</section>
+
+<section aria-labelledby="h-tips">
+  <h2 id="h-tips">Board-building tips</h2>
+  <div class="tips">
+    <div class="tip">Serve reds slightly cool and whites not ice cold. Take cheese out of the fridge about 30 to 60 minutes ahead so the flavor opens up.</div>
+    <div class="tip">Aim for one soft, one firm and one bold cheese. Variety in texture matters as much as variety in flavor.</div>
+    <div class="tip">Taste in order from mild to strong, and sip water between pairings. Strong blue cheese first will flatten everything after it.</div>
+    <div class="tip">Cut the rind off before judging a pairing only if you dislike it. Bloomy rinds on brie are edible and add earthy notes that suit Pinot Noir.</div>
+  </div>
+</section>
+
+<section class="sources" aria-labelledby="h-src">
+  <h2 id="h-src">Sources</h2>
+  <ul>
+    <li><a href="http://www.garyfarrellwinery.com/pinot-noir-and-cheese-the-complete-pairing-guide/" target="_blank" rel="noopener">Gary Farrell Winery: Pinot Noir and Cheese, the Complete Pairing Guide</a></li>
+    <li><a href="https://culturecheesemag.com/cheese-pairings/how-to-pair-wine-and-cheese/" target="_blank" rel="noopener">Culture Cheese Magazine: An Expert's Guide to Pairing Wine and Cheese</a></li>
+    <li><a href="https://tastingtable.com/1134375/best-trader-joes-wine-and-cheese-pairings" target="_blank" rel="noopener">Tasting Table: Best Trader Joe's Wine and Cheese Pairings</a></li>
+    <li><a href="https://content.robertparker.com/perfect-wine-and-cheese-pairings-from-trader-joe-s" target="_blank" rel="noopener">Robert Parker Wine Advocate: Perfect Wine and Cheese Pairings from Trader Joe's</a></li>
+    <li><a href="https://www.traderjoes.com/home/search?q=cheese&global=yes" target="_blank" rel="noopener">Trader Joe's cheese</a> and <a href="https://www.traderjoes.com/home/search?q=wine&global=yes" target="_blank" rel="noopener">wine</a> search, for current products</li>
+  </ul>
+</section>
+</div>
+
+<script>
+const RULES=[
+ ['Acidity cuts richness','Crisp, high-acid wines and bubbles refresh your mouth after creamy, fatty cheese.','Sparkling wine with triple crème brie'],
+ ['Fat softens tannin','Tannin is the dry, grippy feel in red wine. Fat and protein in cheese smooth it out.','Cabernet with aged cheddar'],
+ ['Salt loves sugar','Salty cheese makes sweet wine taste even better, and the sweetness tames the salt.','Port with blue cheese'],
+ ['Match the weight','Delicate wine with delicate cheese. A bold wine needs a cheese with enough flavor to hold up.','Rosé with fresh mozzarella'],
+ ['Young cheese, gentle wine','Fresh cheeses make tannic reds taste chalky. Pick light, bright wines for them.','Sauvignon Blanc with goat cheese']
+];
+document.getElementById('rules').innerHTML=RULES.map(r=>`<div class="rule"><b>${r[0]}</b><p>${r[1]}</p><div class="eg">Try: ${r[2]}</div></div>`).join('');
+
+const WINES={
+ cremant:{n:'Crémant / sparkling',c:'#e8d27a',d:'Dry, crisp bubbles with a toasty, brioche note. Example: La Burgondie Crémant de Bourgogne.'},
+ prosecco:{n:'Prosecco',c:'#efe3a0',d:'Light, fruity and lightly sweet with green apple and pear. Easygoing and refreshing.'},
+ sauv:{n:'Sauvignon Blanc',c:'#d9dd8a',d:'Zesty and grassy with citrus and high acidity. Marlborough bottles are the classic style.'},
+ chard:{n:'Chardonnay',c:'#e3c75c',d:'Medium to full body. Oaked versions are creamy with butter and baked-apple notes; Monterey styles lean fruit and citrus.'},
+ riesling:{n:'Riesling (off-dry)',c:'#e6e08e',d:'Bright acidity balanced by a touch of sweetness, with peach and citrus.'},
+ rose:{n:'Rosé',c:'#e89aa6',d:'Dry and fresh with strawberry and citrus. Light enough for delicate cheeses.'},
+ pinot:{n:'Pinot Noir',c:'#8a2b43',d:'Lower tannin, higher acidity, red cherry with earthy, mushroom notes. The most cheese-friendly red.'},
+ cab:{n:'Cabernet / Zinfandel',c:'#4a1530',d:'Full-bodied, tannic reds with dark fruit. They need rich, fatty or aged cheese.'},
+ ripasso:{n:'Ripasso / Amarone',c:'#5e1128',d:'Rich Italian reds made from partly dried grapes, with dried-fruit sweetness and structure.'},
+ port:{n:'Tawny or Ruby Port',c:'#6b2a1c',d:'Sweet, fortified and high in alcohol, with raisin, caramel and nut flavors.'}
+};
+const CHEESES={
+ brie:{n:'Triple crème brie',c:'#f2e6c2',d:'Very soft, buttery and mild with a bloomy rind.'},
+ goat:{n:'Goat cheese (chèvre)',c:'#f6f1e7',d:'Fresh, tangy and lemony, usually sold as a log.'},
+ mozz:{n:'Fresh mozzarella',c:'#fbf8f0',d:'Mild, milky and soft. Very delicate.'},
+ feta:{n:'Feta',c:'#efe9d9',d:'Briny, salty and tangy with a crumbly texture.'},
+ manchego:{n:'Manchego',c:'#e4c56e',d:'Spanish sheep milk cheese: firm, nutty and gently sweet.'},
+ gruyere:{n:'Cave-aged Gruyère',c:'#dcae4c',d:'Nutty, slightly sweet and savory, with a dense, smooth texture.'},
+ cheddar:{n:'Aged cheddar',c:'#e19a2a',d:'Sharp, salty and crumbly. Truffle and other flavored versions add earthiness.'},
+ gouda:{n:'Aged gouda',c:'#c97f26',d:'Caramel and butterscotch notes, firm with crunchy crystals.'},
+ parm:{n:'Parmigiano Reggiano',c:'#e9c875',d:'Hard, salty and nutty with deep umami and a granular bite.'},
+ blue:{n:'Blue (Stilton or Gorgonzola)',c:'#a9b3b0',d:'Pungent, salty and creamy with sharp mineral veins.'}
+};
+// [wine, cheese, rating (3 classic, 2 good, 0 avoid), reason]
+const P=[
+ ['cremant','brie',3,'Bubbles and acid cut the cream. The wine\'s toasty brioche notes echo the cheese.'],
+ ['cremant','parm',2,'Salty, nutty cheese against crisp bubbles is a clean, refreshing contrast.'],
+ ['cremant','manchego',2,'Nutty sheep milk cheese suits the toasty character of the wine.'],
+ ['cremant','goat',2,'Matching high acid with high acid keeps both bright.'],
+ ['cremant','blue',0,'Pungent blue overwhelms delicate bubbles.'],
+ ['prosecco','mozz',3,'Light and milky meets light and fruity. Nothing overpowers anything.'],
+ ['prosecco','brie',2,'A little sweetness and fizz lift a rich, creamy cheese.'],
+ ['prosecco','parm',2,'Fizz scrubs the palate between bites of salty, granular cheese.'],
+ ['prosecco','feta',2,'Mild sweetness softens feta\'s brine.'],
+ ['prosecco','cheddar',0,'Sharp aged cheddar makes a light wine taste thin.'],
+ ['sauv','goat',3,'The classic. Grassy citrus wine against tangy chèvre. Contrast in flavor, match in acidity.'],
+ ['sauv','feta',3,'Bright acid echoes the tang while the wine freshens the salt.'],
+ ['sauv','brie',2,'Zippy acid contrasts a soft, creamy cheese.'],
+ ['sauv','mozz',2,'Both are light and fresh. Add tomato and basil for the full effect.'],
+ ['sauv','gouda',0,'Sweet caramel cheese makes the wine taste sour.'],
+ ['chard','manchego',3,'Fruit and citrus balance the savory, nutty cheese.'],
+ ['chard','gruyere',3,'Creamy oaked styles mirror the cheese\'s nutty richness.'],
+ ['chard','brie',2,'Buttery texture on both sides. Pick an unoaked style if you want more contrast.'],
+ ['chard','cheddar',2,'Works with a milder cheddar. Very sharp ones will dominate.'],
+ ['chard','blue',0,'Blue overwhelms the wine and makes it taste flat.'],
+ ['riesling','blue',3,'Sweet, acidic wine against salty blue. Salt makes the fruit pop.'],
+ ['riesling','feta',2,'A little sugar calms brine; acid keeps it lively.'],
+ ['riesling','gouda',2,'Peachy fruit lifts the caramel notes in aged gouda.'],
+ ['riesling','gruyere',2,'Acid and fruit refresh a nutty, savory cheese.'],
+ ['rose','feta',3,'Dry, fresh and fruity, a good partner for salty, tangy cheese.'],
+ ['rose','goat',3,'Strawberry and citrus complement fresh chèvre.'],
+ ['rose','mozz',2,'Light enough that the cheese isn\'t drowned out.'],
+ ['rose','manchego',2,'Red fruit brings out the cheese\'s gentle sweetness.'],
+ ['rose','blue',0,'Delicate rosé disappears next to pungent blue.'],
+ ['pinot','brie',3,'Soft, earthy rind echoes the wine\'s mushroom notes. Cream balances acidity.'],
+ ['pinot','gruyere',3,'Nutty and slightly sweet. Complements the fruit without competing. A dependable choice.'],
+ ['pinot','gouda',3,'Caramel notes suit the darker fruit. Firm texture gives acidity something to work against.'],
+ ['pinot','cheddar',2,'Sharp saltiness brings out fruit in a lighter Pinot. Taste a small piece first with bolder bottles. A truffle cheddar is a sommelier favorite.'],
+ ['pinot','goat',2,'Earthy wine with tangy, creamy cheese. Works best with a lighter Pinot.'],
+ ['pinot','blue',0,'Pungent blue overwhelms Pinot\'s subtlety and makes it taste thin.'],
+ ['cab','cheddar',3,'Tannin grips the milkfat in a dense, aged cheddar. A textbook match.'],
+ ['cab','gouda',3,'Aged gouda\'s caramel and crunch hold up to bold dark fruit.'],
+ ['cab','parm',2,'Salty, umami-rich cheese tames the tannin.'],
+ ['cab','manchego',2,'Firm, nutty and rich enough to stand next to a big wine.'],
+ ['cab','mozz',0,'Fresh cheese makes tannin taste chalky.'],
+ ['cab','goat',0,'Young, tangy cheese clashes with heavy tannin.'],
+ ['ripasso','parm',3,'Dried-fruit richness meets deep umami. Hard to beat.'],
+ ['ripasso','blue',3,'A big wine with a touch of sweetness stands up to Gorgonzola.'],
+ ['ripasso','gouda',2,'Caramel and dried fruit are a natural fit.'],
+ ['ripasso','cheddar',2,'Sharp, aged cheese matches the wine\'s weight.'],
+ ['ripasso','mozz',0,'Too mild for such a rich wine.'],
+ ['port','blue',3,'The classic. Sweetness offsets the acid, tannin, alcohol and salt of the cheese.'],
+ ['port','cheddar',2,'Aged cheddar\'s salt plays well against the wine\'s sweetness.'],
+ ['port','gouda',2,'Caramel on caramel: nutty and rich, a good dessert course.'],
+ ['port','goat',0,'Fresh, tangy cheese clashes with a heavy, sweet wine.']
+];
+
+// add-ons: id -> [category, name]
+const A={
+ wcr:['Crackers & bread','Water crackers'],seed:['Crackers & bread','Seeded crisps'],bag:['Crackers & bread','Sliced baguette'],crostini:['Crackers & bread','Toasted crostini'],sour:['Crackers & bread','Sourdough slices'],walnutbr:['Crackers & bread','Walnut or raisin-nut bread'],pretz:['Crackers & bread','Pretzel crisps'],
+ grape:['Fruit','Red grapes'],apple:['Fruit','Apple or pear slices'],fig:['Fruit','Fresh or dried figs'],apricot:['Fruit','Dried apricots'],cherry:['Fruit','Dried or fresh cherries'],berry:['Fruit','Strawberries or blueberries'],tom:['Fruit','Cherry tomatoes'],
+ walnut:['Nuts','Walnuts'],almond:['Nuts','Marcona or roasted almonds'],pecan:['Nuts','Candied pecans'],pist:['Nuts','Pistachios'],
+ honey:['Spreads & condiments','Honey or honeycomb'],fjam:['Spreads & condiments','Fig jam'],pjam:['Spreads & condiments','Pepper jelly'],memb:['Spreads & condiments','Quince paste (membrillo)'],mustard:['Spreads & condiments','Whole grain mustard'],bals:['Spreads & condiments','Balsamic glaze'],pesto:['Spreads & condiments','Basil pesto'],oil:['Spreads & condiments','Olive oil and flaky salt'],chut:['Spreads & condiments','Mango chutney'],
+ prosc:['Meats','Prosciutto'],sala:['Meats','Salami'],chor:['Meats','Chorizo or Spanish-style salami'],
+ olive:['Pickled & savory','Olives'],corn:['Pickled & savory','Cornichons'],roast:['Pickled & savory','Roasted peppers'],cuke:['Pickled & savory','Cucumber slices'],choc:['Pickled & savory','Dark chocolate']
+};
+// cheese -> suggested add-ons [id, why]
+const R={
+ brie:[['bag','Neutral bread lets the buttery cheese lead.'],['apple','Crisp fruit adds freshness.'],['fjam','Sweet jam against rich cream.'],['almond','A little crunch.'],['honey','Honey drizzled over the rind.']],
+ goat:[['honey','Sweet against tang.'],['berry','Berries echo the acidity.'],['crostini','A sturdy base for a spreadable log.'],['pist','Green and buttery next to a lemony cheese.'],['oil','Olive oil and flaky salt on a fresh log.']],
+ mozz:[['tom','Tomato and mozzarella is a classic.'],['pesto','Basil keeps it Italian.'],['bals','A little glaze for sweetness.'],['oil','Simple and clean.'],['crostini','Toasted bread for texture.']],
+ feta:[['olive','Briny with briny.'],['cuke','Cool and crisp.'],['roast','Sweet peppers soften the salt.'],['oil','Drizzle and oregano.'],['bag','Soak up the olive oil.']],
+ manchego:[['memb','The traditional Spanish partner.'],['almond','Marcona almonds are classic.'],['chor','Spanish cured meat, naturally.'],['olive','Savory and salty.'],['bag','Simple bread.']],
+ gruyere:[['apple','Sweet-tart fruit cuts richness.'],['corn','Pickles brighten a dense cheese.'],['mustard','Mustard suits Alpine cheese.'],['walnutbr','Nutty on nutty.'],['prosc','Salty, silky ham.']],
+ cheddar:[['apple','Classic with sharp cheddar.'],['pjam','Sweet heat.'],['mustard','Tangy and sharp.'],['pretz','Salty crunch.'],['sala','Hearty and savory.']],
+ gouda:[['pecan','Candied pecans suit caramel notes.'],['fig','Dried fruit sweetness.'],['mustard','Sharp contrast.'],['apple','Crunch and acid.'],['choc','Dark chocolate with caramel notes.']],
+ parm:[['bals','A drizzle is a classic.'],['prosc','Salty with salty, in a good way.'],['fig','Sweet fruit against savory.'],['pear','Pear slices add juice.'],['almond','Nutty, salty.']],
+ blue:[['honey','Honey is the textbook partner.'],['fig','Rich, sweet and jammy.'],['walnut','Walnuts and blue cheese go back centuries.'],['apple','Fresh crunch and acid.'],['choc','Dark chocolate with port.']]
+};
+R.parm=R.parm.filter(x=>A[x[0]]); // drop unknown ids
+R.parm.push(['apple','Pear and apple slices add juice.']);
+// always-works basics
+const BASICS=['wcr','grape','almond'];
+
+const $=id=>document.getElementById(id);
+const S={mode:'wine',first:null,pair:null,picks:new Set()};
+
+function chipHtml(map,key,sel){return Object.entries(map).map(([k,v])=>`<button class="chip" data-k="${k}" aria-pressed="${sel===k}"><span class="dot" style="background:${v.c}"></span>${v.n}</button>`).join('')}
+
+function renderStep1(){
+  const w=S.mode==='wine';
+  $('s1-t').textContent=w?'Pick a wine':'Pick a cheese';
+  $('s2-t').textContent=w?'Choose a cheese':'Choose a wine';
+  $('s1-chips').innerHTML=chipHtml(w?WINES:CHEESES,'',S.first);
+  const a=$('s1-about');
+  if(S.first){const o=(w?WINES:CHEESES)[S.first];a.hidden=false;a.innerHTML=`<b>${o.n}.</b> ${o.d}`}else a.hidden=true;
+}
+function renderStep2(){
+  const w=S.mode==='wine';
+  if(!S.first){$('s2').innerHTML='<div class="empty">Pick one above and the best matches appear here, ranked.</div>';return}
+  const rows=P.filter(p=>p[w?0:1]===S.first).sort((a,b)=>b[2]-a[2]);
+  const lab={3:'Classic',2:'Good',0:'Skip it'};
+  $('s2').innerHTML='<div class="matches">'+rows.map(p=>{
+    const other=w?p[1]:p[0], o=(w?CHEESES:WINES)[other], sel=S.pair&&S.pair[0]===p[0]&&S.pair[1]===p[1];
+    return `<button class="match" data-w="${p[0]}" data-c="${p[1]}" aria-pressed="${!!sel}"><span class="top"><span class="nm">${o.n}</span><span class="pill p${p[2]}">${lab[p[2]]}</span></span><span class="why">${p[3]}</span></button>`}).join('')+'</div>';
+}
+function renderStep3(){
+  if(!S.pair){$('s3').innerHTML='<div class="empty">Select a pairing in step 2 to see crackers, fruit, spreads and more that suit it.</div>';return}
+  const [wk,ck]=S.pair, recs=R[ck]||[], recIds=recs.map(r=>r[0]);
+  const cats={};
+  Object.entries(A).forEach(([id,[c,n]])=>{(cats[c]=cats[c]||[]).push(id)});
+  const catHtml=Object.entries(cats).map(([c,ids])=>{
+    ids.sort((a,b)=>recIds.includes(b)-recIds.includes(a));
+    return `<div class="cat"><h4>${c}</h4><div class="items">`+ids.map(id=>`<button class="item${recIds.includes(id)?' rec':''}" data-id="${id}" aria-pressed="${S.picks.has(id)}">${recIds.includes(id)?'<span class="star">★</span>':''}${A[id][1]}</button>`).join('')+'</div></div>'}).join('');
+  const picks=[...S.picks];
+  const why=Object.fromEntries(recs);
+  $('s3').innerHTML=`<div class="board"><div>${catHtml}<p class="hint"><span class="key"></span>Highlighted items are suggested for ${CHEESES[ck].n.toLowerCase()}. Tap anything to add it.</p></div>
+  <aside class="summary" aria-live="polite"><h3>Your board</h3>
+   <div class="sum-row"><span class="dot" style="background:${WINES[wk].c}"></span>${WINES[wk].n}</div>
+   <div class="sum-row"><span class="dot" style="background:${CHEESES[ck].c}"></span>${CHEESES[ck].n}</div>
+   ${picks.length?`<ul class="sum-list">${picks.map(id=>`<li>${A[id][1]}<span>${why[id]||A[id][0]}</span></li>`).join('')}</ul>`:'<p class="hint">Nothing added yet. Try the highlighted items or the quick-start button.</p>'}
+   <div class="actions"><button class="btn ghost" id="quick">Quick start</button><button class="btn ghost" id="clear">Clear</button><button class="btn" id="copy">Copy list</button></div>
+   <p class="hint" id="copied"></p></aside></div>`;
+}
+function renderAll(){renderStep1();renderStep2();renderStep3()}
+
+function setMode(m){S.mode=m;S.first=null;S.pair=null;S.picks=new Set();$('m-wine').setAttribute('aria-pressed',m==='wine');$('m-cheese').setAttribute('aria-pressed',m==='cheese');renderAll()}
+$('m-wine').onclick=()=>setMode('wine');
+$('m-cheese').onclick=()=>setMode('cheese');
+$('s1-chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;S.first=b.dataset.k;S.pair=null;S.picks=new Set();renderAll()};
+$('s2').onclick=e=>{const b=e.target.closest('.match');if(!b)return;S.pair=[b.dataset.w,b.dataset.c];S.picks=new Set();renderStep2();renderStep3();$('s3').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'})};
+$('s3').onclick=e=>{
+  const it=e.target.closest('.item');
+  if(it){const id=it.dataset.id;S.picks.has(id)?S.picks.delete(id):S.picks.add(id);renderStep3();return}
+  if(e.target.id==='quick'){const ck=S.pair[1];S.picks=new Set([...(R[ck]||[]).slice(0,4).map(r=>r[0]),...BASICS.slice(0,1)]);renderStep3()}
+  if(e.target.id==='clear'){S.picks=new Set();renderStep3()}
+  if(e.target.id==='copy'){
+    const [wk,ck]=S.pair;
+    const txt=`Wine: ${WINES[wk].n}\nCheese: ${CHEESES[ck].n}\nAdd-ons: ${[...S.picks].map(i=>A[i][1]).join(', ')||'none yet'}`;
+    const msg=$('copied');
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>{msg.textContent='Copied.'}).catch(()=>{msg.textContent=txt})
+  }
+};
+renderAll();
+</script>
