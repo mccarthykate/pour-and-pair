@@ -1,5 +1,7 @@
 # Pour & Pair
 
+**Live site:** https://mccarthykate.github.io/pour-and-pair/ (the first visit takes 10 to 30 seconds while R loads in your browser)
+
 A Shiny app that teaches wine and cheese pairing using products sold at
 Trader Joe's. Set a guest count, then pick as many wines and cheeses as you like,
 starting with either. For each pick the app ranks its best matches and suggests a
@@ -14,6 +16,18 @@ pairings. An illustrated mini cheese board floats on the right and fills in as y
 2. Install the packages once: `install.packages(c("shiny", "bslib"))`
 3. Open `app.R` and click **Run App**, or run `shiny::runApp()` in the console.
 
+## Publish updates
+
+The live site is a Shinylive export, so R runs in the visitor's browser and
+nobody needs R installed. After editing the app:
+
+1. Commit and push your code changes as usual.
+2. Run `sh publish.sh`. It rebuilds the site and pushes it to the `gh-pages`
+   branch, which GitHub Pages serves. Changes appear within a couple of minutes.
+
+You need the `shinylive` R package (`install.packages("shinylive")`) and the
+GitHub CLI signed in (`gh auth login`).
+
 ## Files
 
 - `app.R`: UI and server
@@ -24,6 +38,7 @@ pairings. An illustrated mini cheese board floats on the right and fills in as y
 - `R/icons.R`: the illustrated mini cheese board
 - `R/learn.R`: the Learn tab, an in-depth guide with a link to the source for every claim
 - `www/styles.css`: styling
+- `publish.sh`: rebuilds the site and publishes it to GitHub Pages
 
 ## About the product data
 
