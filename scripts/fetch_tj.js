@@ -15,10 +15,7 @@ const names = [...csvNames('wines.csv'), ...csvNames('cheeses.csv'), ...csvNames
 
 (async () => {
   const browser = await chromium.launch();
-  const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-    locale: 'en-US', viewport: { width: 1280, height: 900 }
-  });
+  const context = await browser.newContext({ locale: 'en-US', viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
   const res = await page.goto('https://www.traderjoes.com/home/search?q=cheese&global=yes', { waitUntil: 'domcontentloaded', timeout: 60000 });
   console.log('Trader Joe\'s page status:', res && res.status());
