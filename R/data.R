@@ -37,69 +37,6 @@ WINE_STYLES <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# name|price|note
-.wine <- list(
-  cremant = c(
-    "Opaline Brut Sparkling Wine|9.99|", "Reserve North Coast Brut Sparkling Wine|9.99|",
-    "La Burgondie Crémant de Bourgogne|11.99|Tasting Table suggests it with triple crème brie.",
-    "Platinum Reserve Brut Sparkling Wine Sonoma County|14.99|",
-    "Platinum Reserve Blanc de Blancs Napa Valley Sparkling Wine|14.99|",
-    "L'Eclat Blanc de Blancs|15.99|",
-    "Henri Laffard Grand Reserve Brut Champagne|26.99|True Champagne from France."),
-  prosecco = c(
-    "Prosecco|8.99|", "Villa Antica Asolo Prosecco DOCG Superiore|8.99|",
-    "Cecilia Beretta Prosecco|10.99|", "Incanto Prosecco|14.99|"),
-  sauv = c(
-    "Tazmin Breeze New Zealand Sauvignon Blanc|4.99|", "Vignobles Lacheteau Touraine Sauvignon Blanc|6.99|",
-    "Picton Bay Sauvignon Blanc|7.99|", "Tuatea Marlborough New Zealand Sauvignon Blanc|7.99|",
-    "Le Beau Sud Vermentino-Sauvignon Blanc|8.99|", "Charles Shaw Sauvignon Blanc|3.49|"),
-  lightwhite = c(
-    "Charles Shaw Pinot Grigio|3.49|", "Organic Charles Shaw Pinot Grigio|3.99|",
-    "Espiral Vinho Verde|5.49|", "Villa Borghetti Otto Pino Grigio|7.99|",
-    "Casone Toscana Vermentino 2023|7.99|", "Sauvigio Sauvignon Blanc & Pinot Grigio|6.99|"),
-  chard = c(
-    "Charles Shaw Chardonnay|3.49|", "Maison Barboulot Chardonnay-Viognier 2024|5.99|",
-    "Big Churn Chardonnay California|6.99|", "Rebuttel Chardonnay|6.99|", "Copilot Chardonnay 2023|7.99|",
-    "Compass Bridge Sonoma County Chardonnay 2023|8.99|", "VINTJS Sonoma County Chardonnay 2021|8.99|",
-    "Reserve Chardonnay Yountville Napa Valley 2023|9.99|",
-    "Reserve Chardonnay Arroyo Seco Monterey County 2023 Lot #262|9.99|Monterey style: fruit and citrus.",
-    "Grand Reserve Chardonnay Carneros 2023|12.99|"),
-  aromatic = c(
-    "Emma Reichart Dry Riesling|4.99|Dry, not sweet.", "Honey Moon Viognier|5.99|"),
-  rose = c(
-    "Emma Reichart Rosé Pinot Noir|4.99|", "Cinsault Rosé Maison Barboulot|5.99|",
-    "La Ferme Julien Rosé|6.99|", "Giardino Pinot Grigio Rosé Vivace|6.99|",
-    "French Fizz Le Rosé 2021|7.99|", "Opaline Pinot Noir Brut Rosé|9.99|",
-    "Reserve Brut Rosé North Coast|9.99|", "Cecilia Beretta Prosecco Rosé|10.99|",
-    "La Burgondie Cremant De Bourgogne Rose Brut|13.99|", "L'Eclat Brut Rosé|14.99|"),
-  pinot = c(
-    "Loudenotte Pinot Noir 2022|6.99|", "Moon X Pinot Noir|6.99|", "Copilot Pinot Noir 2023|7.99|",
-    "Caretaker Pinot Noir 2022|9.99|", "Reserve Pinot Noir Santa Barbara County 2022|9.99|",
-    "Compass Bridge Sonoma County Pinot Noir|9.99|", "Grand Reserve Pinot Noir Carneros Lot 23|12.99|",
-    "Grand Reserve Pinot Noir Santa Lucia Highlands 2021 Lot #118|12.99|",
-    "Sunshine Mountain Vineyard Pinot Noir 2023|14.99|", "Platinum Reserve Pinot Noir Carneros 2022|14.99|"),
-  malbec = c(
-    "Super Happy Cabernet Sauvignon Sangiovese & Malbec|9.99|A blend: Malbec is one of three grapes, so expect it a little firmer than a straight Malbec.",
-    "Belhara Estate Malbec|8.99|Not listed on traderjoes.com right now. Reverse Wine Snob reviewed the 2021 vintage (single vineyard, Uco Valley, Mendoza) as a Trader Joe's exclusive in August 2024. Ask in store; price is from that review."),
-  cab = c(
-    "Charles Shaw Cabernet Sauvignon|3.49|", "Charles Shaw Shiraz|3.49|",
-    "Motif Cabernet Sauvignon Red Hills Lake County|5.49|", "Moon X Cabernet Sauvignon|6.99|",
-    "Corvelia Cabernet Sauvignon|9.99|", "Reserve Zinfandel Paso Robles Adelaida District 2023 Lot #265|9.99|",
-    "Compass Bridge Sonoma County Cabernet Sauvignon 2023|9.99|",
-    "Reserve Cabernet Sauvignon Wahluke Slope 2022|9.99|",
-    "Grand Reserve Zinfandel Dry Creek Valley Sonoma 2021|12.99|",
-    "Grand Reserve Syrah Sonoma County 2022|12.99|",
-    "Grand Reserve Cabernet Sauvignon Alexander Valley 2020|12.99|",
-    "Platinum Reserve Cabernet Sauvignon Napa Valley 2020|14.99|"),
-  redblend = c(
-    "Charles Shaw Red Blend|3.49|", "Maison Barboulot Cabernet Syrah|5.99|",
-    "Villa Cerrina Montepulciano D'Abruzzo|6.99|", "Vin De Bordeaux B by Fonbadet Bordeaux 2019|7.99|",
-    "Petit Reserve Cabernet Franc Paso Robles 2021|7.99|", "Casone Toscana Governo All'uso Toscano 2023|8.99|",
-    "Langhe Nebbiolo Rosa dell Olmo 2021|8.99|", "Reserve Meritage Paso Robles 2023 Red Wine|9.99|",
-    "Susumaniello Ruggero di Bardo|9.99|",
-    "Grand Reserve Meritage Paso Robles 2023|12.99|")
-)
-
 # ---- Cheese styles ------------------------------------------------------
 CHEESE_STYLES <- data.frame(
   id = c("brie", "goat", "fresh", "feta", "sheep", "alpine", "toscano", "cheddar", "gouda", "parm", "blue", "stilton"),
@@ -124,81 +61,17 @@ CHEESE_STYLES <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# name|size|price|note
-.cheese <- list(
-  brie = c(
-    "Double Cream Brie|8Oz|4.49|", "Double Cream Brie|16Oz|9.99|", "Triple Creme Brie with Calvados Apple Brandy|1Lb|12.99|",
-    "Saint André Triple Crème Brie|1Lb|14.99|Very rich. Bubbles are the classic partner.",
-    "Double Crème Brie with Truffles|8.5Oz|10.99|", "Dorothy's Comeback Cow Soft Ripened Cheese|7Oz|6.99|"),
-  goat = c(
-    "Chevre Goat Cheese|5Oz|2.99|", "Chevre with Honey|5Oz|3.29|", "Chevre with Fine Herbs|5Oz|3.29|",
-    "Silver Goat® Chevre Goat Cheese Log|8.5Oz|4.79|", "Cranberry Chèvre Goat Cheese|8Oz|5.99|",
-    "Hot Honey Goat Milk Cheese|4Oz|2.99|", "Caramelized Onion Goat's Milk Cheese|4Oz|3.29|",
-    "Wild Blueberry Vanilla Chevre|8Oz|5.99|", 
-    "The \"OG\" (Old Goat) Aged Goat Cheese|1Lb|12.99|Aged and firm, bolder than fresh chèvre."),
-  fresh = c(
-    "All Natural Fresh Mozzarella Cheese|8Oz|3.99|", "Burrata|8Oz|4.99|",
-    "Truffle Burrata|8Oz|5.99|", "Marinated Fresh Mozzarella Cheese|12Oz|5.99|"),
-  feta = c("Feta Cheese|8Oz|3.79|", "Israeli Feta|17.6Oz|8.99|"),
-  sheep = c(
-    "Manchego Cheese|1Lb|14.99|", "Spanish Sheep Milk Cheese with Quince Jam|6Oz|5.99|",
-    "Aged Sheep's Milk Cheese Marinated in EVOO|6Oz|5.99|", "The Sheepish Tomato|6Oz|5.99|",
-    "The Sheepish Pesto|5.3Oz|6.49|"),
-  alpine = c(
-    "Raw Milk Cave Aged Le Gruyère|1Lb|19.99|Nutty and sweet. A dependable Pinot Noir cheese.",
-    "Cheddar & Gruyere Mèlange Cheese|1Lb|7.99|", 
-    "Jasper Hill Vault No 5 Cave Aged Cheese|1Lb|11.99|", "Fontina|1Lb|6.99|",
-    "Pink Peppercorn Fontina Cheese|7Oz|6.99|", 
-    "French Heritage Saint Paulin Cheese|5.3Oz|3.99|"),
-  toscano = c(
-    "Toscano Cheese with Black Pepper|1Lb|11.99|Cracked pepper adds gentle spice. Good with fruity reds.",
-    "Toscano Cheese Crunchy Chili Onion|1Lb|11.99|Savory crunch with a little heat.",
-    "Toscano Cheese Soaked in Chardonnay Wine|1Lb|10.99|The Chardonnay-soaked rind suits a Chardonnay.",
-    "Creamy Toscano Cheese Soaked in Syrah|1Lb|11.99|The Syrah-soaked rind echoes a bold red.",
-    "Creamy Toscano Cheese Dusted with Cinnamon|1Lb|11.99|Sweet spice. Best with softer, fruity wines.",
-    "Ubriaco al Cabernet|1Lb|11.99|Rind is soaked in Cabernet. Pair with a bold red.",
-    "Italian Bigonda Cheese with Herbs|1Lb|11.99|", "Italian Lagorai Semi-Soft Cheese|1Lb|10.49|"),
-  cheddar = c(
-    "Unexpected Cheddar Cheese|5Oz|3.99|", "New Zealand Sharp Cheddar Cheese|1Lb|7.99|",
-    "Orkney White Cheddar Cheese|7Oz|4.99|", "McLelland Vintage Scottish Cheddar|1Each|5.49|",
-    "Coastal Cheddar Cheese with Truffle|5.29Oz|4.99|Truffle cheddar is a sommelier pick for Pinot Noir.",
-    "Cheddar Cheese with Caramelized Onions|1Lb|11.99|", "Irish Porter Cheddar Cheese|1Lb|12.49|",
-    "English Cheddar Cheese with Champagne|1Lb|12.99|", "Figgy Cheddar|1Lb|10.99|", "Sticky Toffee Cheddar|1Lb|11.99|",
-    "Smoked Cheddar Cheese with Paprika|7Oz|4.99|", "Rutland Red Leicester Cheese|1Lb|12.99|",
-    "Cotswold Double Gloucester Cheese|1Lb|11.99|"),
-  gouda = c(
-    "Double Cream Gouda Cheese|1Lb|9.99|", "Walnut Gouda Cheese|6Oz|5.49|", "Caramel Washed Gouda Cheese|1Lb|11.99|",
-    "Family Nijland Clover Gouda Cheese|1Lb|11.99|", "Jersey Gouda|1Lb|12.99|",
-    "1000 Day Gouda Cheese|1Lb|13.99|Aged, with crunchy crystals and deep caramel.",
-    "Mimolette Cheese|7.05Oz|7.49|"),
-  parm = c(
-    "Parmesan Cheese|1Lb|8.99|", "Parmigiano Reggiano Aged Over 55 Months|1Lb|19.99|",
-    "Parmigiano Reggiano Stravecchio|1Lb|21.99|", "Truffle Pecorino|1Lb|12.99|", "Canestrato Pepato|1Lb|11.99|"),
-  blue = c(
-    "Dolce Creamy Gorgonzola Style Cheese|8Oz|4.99|", "Carr Valley Cheese Glacier Wildfire Blue|5Oz|3.99|",
-    "Cambozola® Triple Cream Cheese|1Lb|14.99|Mild and creamy. The easiest blue to start with.",
-    "Shropshire Blue English Cheese|1Lb|14.99|"),
-  stilton = c(
-    "White Stilton Cheese with Mango & Ginger|1Lb|12.99|", "White Stilton with Cranberries|1Lb|13.99|",
-    "White Stilton Cheese with Apple & Pear|1Lb|13.99|", "Strawberry White Stilton Cheese|6.34Oz|5.49|")
-)
-
-.expand <- function(lst, cols) {
-  do.call(rbind, lapply(names(lst), function(s) {
-    parts <- strsplit(lst[[s]], "|", fixed = TRUE)
-    do.call(rbind, lapply(parts, function(p) {
-      p <- c(p, rep("", length(cols) - length(p)))
-      setNames(data.frame(s, t(p), stringsAsFactors = FALSE), c("style", cols))
-    }))
-  }))
-}
-WINE_PRODUCTS <- .expand(.wine, c("name", "price", "note"))
-WINE_PRODUCTS$price <- as.numeric(WINE_PRODUCTS$price)
+# ---- Products ---------------------------------------------------------------
+# Wines and cheeses live in data/wines.csv and data/cheeses.csv so the nightly
+# Trader Joe's check (scripts/update_catalog.R) can add items, refresh prices and
+# retire discontinued ones. Only active rows are shown.
+WINE_PRODUCTS <- read_catalog("wines.csv")
+WINE_PRODUCTS <- WINE_PRODUCTS[WINE_PRODUCTS$style %in% WINE_STYLES$id, ]
 WINE_PRODUCTS$key <- paste0("w", seq_len(nrow(WINE_PRODUCTS)))
-CHEESE_PRODUCTS <- .expand(.cheese, c("name", "size", "price", "note"))
-CHEESE_PRODUCTS$price <- as.numeric(CHEESE_PRODUCTS$price)
+CHEESE_PRODUCTS <- read_catalog("cheeses.csv")
+CHEESE_PRODUCTS <- CHEESE_PRODUCTS[CHEESE_PRODUCTS$style %in% CHEESE_STYLES$id, ]
 CHEESE_PRODUCTS$key <- paste0("c", seq_len(nrow(CHEESE_PRODUCTS)))
-rm(.wine, .cheese)
+LAST_CHECKED <- if (file.exists(file.path("data", "last_checked.txt"))) readLines(file.path("data", "last_checked.txt"), warn = FALSE)[1] else NA_character_
 
 # ---- Pairings -----------------------------------------------------------
 # rating: 3 = classic, 2 = good, 0 = skip it

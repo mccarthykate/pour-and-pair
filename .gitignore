@@ -4,3 +4,5 @@
 .Ruserdata
 .DS_Store
 site/
+data/tj_snapshot.json
+node_modules/

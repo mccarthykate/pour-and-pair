@@ -1,0 +1,109 @@
+# Every night at midnight Mountain Time: check traderjoes.com, update the product
+# lists in data/, commit the changes and republish the site to GitHub Pages.
+name: Nightly Trader Joe's check
+
+on:
+  schedule:
+    # GitHub schedules run in UTC. Midnight in Denver is 07:00 UTC in winter (MST)
+    # and 06:00 UTC in summer (MDT); both are listed and the job skips the wrong one.
+    - cron: "0 6,7 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Check and report only; don't commit or republish"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    steps:
+      - name: Only run at midnight in Denver
+        id: when
+        run: |
+          hour=$(TZ=America/Denver date +%H)
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$hour" != "00" ]; then
+            echo "It's ${hour}:00 in Denver, not midnight. Skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.when.outputs.go == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.when.outputs.go == 'true'
+        with:
+          node-version: "20"
+
+      - name: Install a headless browser
+        if: steps.when.outputs.go == 'true'
+        run: |
+          npm install --no-save playwright@1.48.2
+          npx playwright install --with-deps chromium
+
+      - name: Read Trader Joe's products
+        if: steps.when.outputs.go == 'true'
+        run: node scripts/fetch_tj.js
+
+      - uses: r-lib/actions/setup-r@v2
+        if: steps.when.outputs.go == 'true'
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        if: steps.when.outputs.go == 'true'
+        with:
+          packages: |
+            any::jsonlite
+            any::shiny
+            any::bslib
+            any::shinylive
+
+      - name: Update the product lists
+        if: steps.when.outputs.go == 'true'
+        run: Rscript scripts/update_catalog.R
+
+      - name: Show what changed
+        if: steps.when.outputs.go == 'true'
+        run: cat data/changes.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the results for review
+        if: always() && steps.when.outputs.go == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-results
+          path: data/
+
+      - name: Commit the changes
+        if: steps.when.outputs.go == 'true' && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/*.csv data/*.txt data/*.md
+          git commit -m "Nightly Trader Joe's update $(TZ=America/Denver date +%Y-%m-%d)" || echo "Nothing to commit"
+          git push
+
+      - name: Republish the site
+        if: steps.when.outputs.go == 'true' && inputs.dry_run != true
+        env:
+          REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sh publish.sh
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

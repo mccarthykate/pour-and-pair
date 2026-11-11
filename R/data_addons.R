@@ -1,95 +1,12 @@
-# Cheese board items sold at Trader Joe's (prices from traderjoes.com, 2026-10-29).
-# Produce and seasonal items vary by store and time of year.
-# Format: name|price|size|icon|role
+# Cheese board items sold at Trader Joe's, kept in data/addons.csv so the nightly
+# Trader Joe's check can update them. Produce and seasonal items vary by store.
 #   icon = shape:color:color2:variant (drawn on the mini board, see R/icons.R)
 #   role = what the item does on a board: carrier, sweet, salty, tart, fresh, crunch
-.addons <- list(
-  "Crackers & bread" = c(
-    "Fig & Olive Crisps|3.99|5.3Oz|rect:#d8c08e:#6b4a6e|carrier",
-    "Raisin Rosemary Crisps|3.99|5.3Oz|rect:#d9c49a:#5a3a3a|carrier",
-    "Pane Guttiau Paper Thin Sardinian Crackers|3.99|8.8Oz|rect:#efdcae:#a07a3a|carrier",
-    "Green Olive Flats Italian Lingue Crackers|3.29|5.29Oz|rect:#e3cf9a:#6b8a3a|carrier",
-    "Golden Rounds Crackers|2.99|12Oz|rd:#e7b85c::scallop|carrier",
-    "Wheat Crisp Crackers|2.49|9Oz|sq:#d7b277:|carrier",
-    "Everything but the Bagel Seasoned Crackers|2.99|10Oz|sq:#e1bf7b:#3a2a1a|carrier",
-    "Organic Naan Crackers|3.49|10Oz|rd:#ead3a0:|carrier",
-    "Gluten Free Norwegian Crispbread|4.79|7.55Oz|rect:#cfa66a:#6b4a22|carrier",
-    "Norwegian Sourdough Rye Chips|3.69|4.6Oz|sq:#b98d58:|carrier",
-    "Pita Bite Crackers|2.99|6Oz|sq:#e8cf98:|carrier",
-    "Pretzel Slims|2.49|8Oz|rect:#9a5a22:#f6efe2:pretzel|carrier",
-    "Strawberry & Jalapeño Crisps|3.99|5.3Oz|rect:#e0c08a:#b03a3a|carrier",
-    "Organic French Baguette|1.99|11.5Oz|bread:#f2dfb2:|carrier",
-    "Ciabatta Baguette|2.29|11.5Oz|bread:#efe0c0:|carrier",
-    "Sourdough Boules|2.99|14Oz|boule:#f0dcae:|carrier"),
-  "Fruit & veggies" = c(
-    "Honeycrisp Apples|1.49|1Each|apple:#c7352d:|fresh",
-    "Red and Green Grapes Duo|6.99|2Lb|grape:#6b3b7a:#7fa84a|fresh",
-    "Fresh Figs|4.99|16Oz|fig:#5b3a62:|fresh",
-    "Strawberries 1 Lb|4.99|16Oz|berry:#d62a3a:|fresh",
-    "Pomegranate|3.49|1Each|pom:#a3122f:|fresh",
-    "Cherry Tomatoes on the Vine|4.99|12Oz|tom:#d83a2b:|fresh",
-    "Persian Cucumbers|2.49|1Lb|cuke:#5f9a45:|fresh",
-    "Medjool Dates|4.99|16Oz|ov:#5a3420:|sweet",
-    "Simply Amazing Soft Dried Apricots|4.99|1Lb|disc:#e8932e:|sweet",
-    "Sweetened Dried Cranberries|1.99|8Oz|bowl:#3a1018:#b3203a:small|sweet",
-    "Freeze Dried Fig Slices|3.69|1.76Oz|fig:#b58a6a:|sweet"),
-  "Nuts" = c(
-    "Roasted & Salted Rosemary Marcona Almonds|5.99|6Oz|bowl:#efe6d6:#dcb784:almond|crunch",
-    "Candied Pecans|4.99|5Oz|bowl:#efe6d6:#9a5f34:pecan|sweet",
-    "Sweet & Spicy Pecans|4.99|5Oz|bowl:#efe6d6:#8a4a26:pecan|sweet",
-    "Dry Roasted & Salted Pistachios|7.49|1Lb|bowl:#efe6d6:#cdb98e:pistachio|crunch",
-    "Dry Roasted & Salted Almonds|6.49|1Lb|bowl:#efe6d6:#b88550:almond|crunch",
-    "Olive & Herbs Mixed Nuts|5.49|10Oz|bowl:#efe6d6:#c4a26a:mixed|crunch",
-    "California Walnut Baking Pieces|6.49|1Lb|bowl:#efe6d6:#b98a55:walnut|crunch"),
-  "Spreads & condiments" = c(
-    "Fig Butter|2.99|11Oz|bowl:#5a2f3a::spoon|sweet",
-    "3 Spreads for Cheeses & Toast|8.99|13.75Oz|bowl:#b8864a::spoon|sweet",
-    "Organic Apricot Preserves|4.29|17.5Oz|bowl:#e5902d::spoon|sweet",
-    "Seville Orange Marmalade Fruit Spread|2.99|7.57Oz|bowl:#e0831c::spoon|sweet",
-    "Sri Lankan Organic Mango Chutney|3.29|8.5Oz|bowl:#d98a1c::spoon|sweet",
-    "Cranberry Ginger Chutney|2.99|8Oz|bowl:#a22537::spoon|sweet",
-    "Multi-Floral & Clover Honey|3.99|12Oz|bowl:#e0a321::dipper|sweet",
-    "Spicy Honey Sauce|4.99|12Oz|bowl:#d6791c::dipper|sweet",
-    "Hot Honey Mustard|1.99|9Oz|bowl:#d29a1a::spoon|tart",
-    "Whole Grain Dijon Mustard|2.29|12.3Oz|bowl:#b9a14a::spoon|tart",
-    "Olive Tapenade Hummus|3.49|10Oz|bowl:#6a6a3a::spoon|salty",
-    "Eggplant Garlic Spread|3.49|12Oz|bowl:#8a6a5a::spoon|salty",
-    "Vegan Kale, Cashew & Basil Pesto|3.99|8Oz|bowl:#5b8a3c::spoon|salty"),
-  "Cured meats" = c(
-    "Sliced Prosciutto|4.29|4Oz|fold:#e6a09c:|salty",
-    "Sliced Calabrese Uncured Salami|3.99|5Oz|roll:#a8322d:|salty",
-    "Salame di Parma Mild Salami|5.99|4Oz|roll:#c4545a:|salty",
-    "Sliced Peppered Uncured Salami|6.99|10Oz|roll:#7a2c2a::pepper|salty",
-    "Spicy Ibérico Uncured Chorizo|7.99|7.04Oz|roll:#c2481f::paprika|salty",
-    "Sliced Bresaola Uncured Beef Prosciutto|6.99|3Oz|roll:#7a2426::lean|salty",
-    "Sliced Mortadella|3.49|5.5Oz|roll:#eaaaa4::mort|salty",
-    "Spanish Inspired Charcuteria|5.99|6Oz|roll:#b3413a:|salty"),
-  "Olives & pickled" = c(
-    "Jumbo Pitted Greek Kalamata Olives|2.99|12Oz|bowl:#2a1f22:#4f2848:olive|salty",
-    "Organic Conversation Olive Trio|3.49|12.35Oz|bowl:#2a1f22:#7a8a3a:trio|salty",
-    "Lemon Stuffed Olives|2.99|12Oz|bowl:#2a1f22:#8f9e3c:stuffedy|salty",
-    "Spanish Manzanilla Olives with Pimento Paste|2.99|14.5Oz|bowl:#2a1f22:#8aa03a:stuffed|salty",
-    "Marinated Artichokes On The Go|1.49|1.58Oz|bowl:#2a2f18:#b5b26a:petal|tart",
-    "Sweet Picanté Peppers|5.49|10.23Oz|bowl:#2a1010:#d42a26:round|tart",
-    "Fire Roasted Red Peppers|3.29|16.4Oz|fold:#c93a24::pepper|tart",
-    "Pickled Red Onions|3.29|12Fl Oz|bowl:#3a1030:#d066a0:ring|tart",
-    "Kosher Dill Pickles|3.49|24Fl Oz|spear:#6a9a3a:|tart",
-    "Dolmas|3.99|9.86Oz|dolma:#6b7a34:|salty"),
-  "Dark chocolate" = c(
-    "70% Peruvian Cacao Dark Chocolate Bar|2.99|3.5Oz|choc:#4a2a20:|sweet",
-    "Organic Dark Chocolate Bar 73% Cacao|2.69|3.51Oz|choc:#43251c:|sweet",
-    "Dark Chocolate Covered Cherries|7.99|12Oz|ov:#3a2218:|sweet",
-    "Dark Chocolate Covered Pistachios|5.99|6Oz|ov:#3a2218:|sweet",
-    "Slightly Coated Dark Chocolate Almonds|5.49|10Oz|ov:#4a2a20:|sweet")
-)
-ADDONS <- do.call(rbind, lapply(names(.addons), function(cat) {
-  p <- do.call(rbind, strsplit(.addons[[cat]], "|", fixed = TRUE))
-  data.frame(category = cat, name = p[, 1], price = as.numeric(p[, 2]), size = p[, 3], icon = p[, 4], role = p[, 5],
-             stringsAsFactors = FALSE)
-}))
+ADDON_CATS <- c("Crackers & bread", "Fruit & veggies", "Nuts", "Spreads & condiments", "Cured meats", "Olives & pickled", "Dark chocolate")
+ADDONS <- read_catalog("addons.csv")
+ADDONS <- ADDONS[ADDONS$category %in% ADDON_CATS, ]
+ADDONS <- ADDONS[order(match(ADDONS$category, ADDON_CATS)), ]
 ADDONS$key <- paste0("a", seq_len(nrow(ADDONS)))
-ADDON_CATS <- names(.addons)
-rm(.addons)
 
 # Suggested board items for each cheese style: product name = reason
 SUGGESTIONS <- list(
@@ -198,5 +115,6 @@ WINE_LEANIN <- list(
 )
 HEAT_ITEMS <- c("Spicy Honey Sauce", "Hot Honey Mustard", "Strawberry & Jalapeño Crisps",
                 "Sweet & Spicy Pecans", "Spicy Ibérico Uncured Chorizo")
-stopifnot(all(unlist(lapply(c(SUGGESTIONS, WINE_LEANIN), names)) %in% ADDONS$name),
-          all(HEAT_ITEMS %in% ADDONS$name))
+# drop suggestions for anything no longer sold
+SUGGESTIONS <- lapply(SUGGESTIONS, function(x) x[names(x) %in% ADDONS$name])
+WINE_LEANIN <- lapply(WINE_LEANIN, function(x) x[names(x) %in% ADDONS$name])

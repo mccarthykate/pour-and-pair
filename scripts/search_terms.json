@@ -1,0 +1,13 @@
+{
+  "wine": ["wine", "sparkling", "prosecco", "champagne", "cremant", "rose", "sauvignon blanc", "pinot grigio", "vinho verde",
+           "vermentino", "chardonnay", "riesling", "viognier", "pinot noir", "malbec", "cabernet", "zinfandel", "syrah",
+           "merlot", "red blend", "meritage", "montepulciano", "nebbiolo", "chianti", "tempranillo", "rioja", "grenache"],
+  "cheese": ["cheese", "brie", "camembert", "goat", "chevre", "mozzarella", "burrata", "feta", "manchego", "sheep",
+             "gruyere", "comte", "fontina", "toscano", "cheddar", "gouda", "parmigiano", "pecorino", "blue", "gorgonzola", "stilton"],
+  "addons": ["cracker", "crisps", "crispbread", "flatbread", "baguette", "sourdough", "ciabatta", "grapes", "apples", "pears",
+             "figs", "strawberries", "cherries", "pomegranate", "tomatoes", "cucumbers", "dates", "dried apricots", "dried cherries",
+             "cranberries", "almonds", "pecans", "pistachios", "walnuts", "cashews", "marcona", "jam", "preserves", "fig butter",
+             "marmalade", "honey", "mustard", "chutney", "tapenade", "pesto", "salami", "prosciutto", "chorizo", "soppressata",
+             "coppa", "bresaola", "mortadella", "charcuterie", "olives", "cornichons", "pickles", "artichoke", "peppers", "dolmas",
+             "dark chocolate"]
+}

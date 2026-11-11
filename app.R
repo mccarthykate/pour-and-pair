@@ -38,6 +38,8 @@ TOOLTIP_JS <- "
 })();
 "
 money <- function(x) sprintf("$%.2f", x)
+# items the nightly Trader Joe's check added in the last 30 days get a "new" badge
+is_new <- function(r) identical(r$source, "auto") && nzchar(r$added) && !is.na(as.Date(r$added, optional = TRUE)) && Sys.Date() - as.Date(r$added) <= 30
 styles_of <- function(kind) if (kind == "wine") WINE_STYLES else CHEESE_STYLES
 products_of <- function(kind) if (kind == "wine") WINE_PRODUCTS else CHEESE_PRODUCTS
 style_name <- function(kind, id) { s <- styles_of(kind); s$name[match(id, s$id)] }
@@ -91,7 +93,9 @@ ui <- page_fluid(
         div(div(class = "step-h", span(class = "eyebrow", "Step 4"), h3("Fill out the board")),
             uiOutput("board"))
       ),
-      p(class = "note mt-2", "Products and prices come from traderjoes.com (checked October 29, 2026). Stock and prices vary by store and season, and produce and seasonal items come and go, so check the shelf."),
+      p(class = "note mt-2", paste0("Products and prices come from traderjoes.com, checked automatically every night",
+                                      if (!is.na(LAST_CHECKED)) paste0(" (last checked ", trimws(LAST_CHECKED), ")") else "",
+                                      ". Stock and prices vary by store and season, and produce and seasonal items come and go, so check the shelf.")),
 
       h2(class = "mt-4 mb-2", "How to choose what goes on the board"),
       div(class = "guide", lapply(seq_along(GUIDE), function(i) {
@@ -183,7 +187,8 @@ server <- function(input, output, session) {
     tags$button(type = "button", class = paste("chip prod", if (on) "on"), `aria-pressed` = tolower(on),
                 onclick = js_set("toggle", paste(kind, r$key, sep = "|")),
                 if (on) span(class = "tick", "✓"), r$name, span(class = "px", label),
-                if (grepl("^Not listed", r$note)) span(class = "warn", "ask in store"))
+                if (grepl("^Not listed", r$note)) span(class = "warn", "ask in store"),
+                if (is_new(r)) span(class = "newb", "new"))
   }
   product_picker <- function(kind, sid) {
     df <- products_of(kind); df <- df[df$style == sid, ]
@@ -400,9 +405,17 @@ server <- function(input, output, session) {
       title <- paste(c(if (!is.na(cx$cn[i])) cx$cn[i], if (!is.na(ws)) cx$wn[i]), collapse = " + ")
       tags$details(class = "adv", open = if (i == 1) NA,
           tags$summary(title),
+          if (!is.na(cs)) {
+            bites <- perfect_bites(cs, ws, ADDONS$name[match(addons(), ADDONS$key)])
+            if (!is.null(bites)) div(class = "bites",
+              div(class = "why-h", paste0("Three perfect bites", if (!is.na(ws)) paste0(" with ", cx$wn[i]) else "")),
+              tags$ol(lapply(seq_len(nrow(bites)), function(j) tags$li(
+                div(class = "bite", span(class = "b-base", bites$base[j]), span(class = "plus", "+"),
+                    span(class = "b-cheese", cx$cn[i]), span(class = "plus", "+"), span(class = "b-top", bites$top[j])),
+                div(class = "bite-why", bites$why[j])))))
+          },
           tags$ul(class = "facts",
                   if (!is.na(cs)) tags$li(tags$b("Bread or cracker? "), CHEESE_ADVICE[[cs]][["carrier"]]),
-                  if (!is.na(cs)) tags$li(tags$b("Jam or meat? "), CHEESE_ADVICE[[cs]][["topper"]]),
                   if (!is.na(ws)) tags$li(tags$b("Because of the wine. "), WINE_ADVICE[[ws]]),
                   if (!is.na(ws) && WINE_TRAITS[[ws]]$dry_caution) tags$li(tags$b("Go easy on. "), "Honey, jam, chutney, candied nuts and chocolate. They are sweeter than this dry wine and will make it taste sharp. If you want a spread, pick the tartest one (apricot preserves, mustard) and keep it small."),
                   if (!is.na(ws) && WINE_TRAITS[[ws]]$tannic) tags$li(tags$b("Go easy on. "), "Spicy items such as hot honey, jalapeño crisps and chorizo. Heat makes tannin taste harsher.")))
@@ -420,6 +433,7 @@ server <- function(input, output, session) {
                         onclick = js_set("add", items$key[i]),
                         if (rec) span(class = "star", "★"), nm,
                         span(class = "px", money(items$price[i])), if (cau) span(class = "warn", "go easy"),
+                        if (is_new(items[i, ])) span(class = "newb", "new"),
                         if (nzchar(tip)) span(class = "visually-hidden", paste0(" ", tip)))
           })))
     })
