@@ -1,5 +1,5 @@
-// Runs inside a traderjoes.com page (the site blocks plain scripted requests, so the
-// nightly job drives a real browser). Uses the same product search the website uses.
+// Runs inside a traderjoes.com page open in a browser, during a refresh someone starts
+// by hand. Uses the same product search the website uses.
 // args: { terms: [search words], names: [exact product names to confirm] }
 // Returns { items: [...], names: { name: item | null }, failed: n }
 (async (args) => {

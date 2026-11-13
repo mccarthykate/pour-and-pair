@@ -93,7 +93,7 @@ ui <- page_fluid(
         div(div(class = "step-h", span(class = "eyebrow", "Step 4"), h3("Fill out the board")),
             uiOutput("board"))
       ),
-      p(class = "note mt-2", paste0("Products and prices come from traderjoes.com, checked automatically every night",
+      p(class = "note mt-2", paste0("Products and prices come from traderjoes.com and are refreshed from time to time",
                                       if (!is.na(LAST_CHECKED)) paste0(" (last checked ", trimws(LAST_CHECKED), ")") else "",
                                       ". Stock and prices vary by store and season, and produce and seasonal items come and go, so check the shelf.")),
 

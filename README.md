@@ -34,21 +34,39 @@ GitHub CLI signed in (`gh auth login`).
 - `R/data.R`: wine and cheese types, products, prices, and pairings
 - `R/data_addons.R`: crackers, fruit, nuts, spreads, meats, pickles, chocolate, plus drawing specs and roles
 - `R/companions.R`: second-wine and second-cheese suggestions, and pairing lookups
-- `R/guidance.R`: why-it-works logic, product facts, bread/jam/meat advice, guest planner
+- `R/a_catalog.R`: reads the product lists in `data/`
+- `R/bites.R`: the three perfect bites for each cheese and wine
+- `R/guidance.R`: why-it-works logic, product facts, bread advice, guest planner
 - `R/icons.R`: the illustrated mini cheese board
 - `R/learn.R`: the Learn tab, an in-depth guide with a link to the source for every claim
 - `www/styles.css`: styling
+- `data/`: the product lists, and the last-checked date
+- `scripts/`: the Trader Joe's refresh (`tj_page.js`, `search_terms.json`, `update_catalog.R`)
 - `publish.sh`: rebuilds the site and publishes it to GitHub Pages
 
 ## About the product data
 
-Products and prices were read from traderjoes.com on 2026-10-29. Stock and
+Products and prices come from traderjoes.com and are refreshed by hand from
+time to time (last on 2026-11-13). Trader Joe's blocks automated access, so
+there is no scheduled job: a refresh is done in a normal browser session.
+
+To refresh:
+
+1. Open traderjoes.com in a browser and run `scripts/tj_page.js` in the page,
+   with the search words from `scripts/search_terms.json`.
+2. Save the result as `data/tj_snapshot.json`.
+3. Run `Rscript scripts/update_catalog.R`. It refreshes prices, hides items the
+   site no longer lists, adds new wines, cheeses and board items that fit the
+   app, and writes a summary to `data/changes.md`. It changes nothing if the
+   snapshot looks incomplete. New items show a "new" badge for 30 days.
+4. Review the changes, commit, and run `sh publish.sh`.
+
+The product lists are `data/wines.csv`, `data/cheeses.csv` and
+`data/addons.csv`; edit them directly to add or remove a product. Stock and
 prices vary by store and season, and some products are not on the website.
 The website listed no Port, dessert wine or Ripasso, so those styles are not
-included. The only Malbec on the website was a Cabernet/Sangiovese/Malbec blend;
-Belhara Estate Malbec is included as "ask in store" because a 2024 review lists
-it as a Trader Joe's exclusive, but it was not on the website. To add or remove a product, edit the lists at the top of
-`R/data.R` and `R/data_addons.R`.
+included. Belhara Estate Malbec is included as "ask in store" because a 2024
+review lists it as a Trader Joe's exclusive, but it was not on the website.
 
 ## Sources
 

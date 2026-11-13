@@ -1,4 +1,4 @@
-# Nightly: merge the Trader Joe's snapshot (data/tj_snapshot.json, from fetch_tj.js) into
+# Merge a Trader Joe's snapshot (data/tj_snapshot.json, collected with tj_page.js) into
 # data/wines.csv, data/cheeses.csv and data/addons.csv.
 #  - refreshes prices for items still sold
 #  - retires items no longer listed (items noted "Not listed..." are kept, they are in-store only)
@@ -73,9 +73,9 @@ wine_style <- function(name, cat) {
   if (!has(cat, "Wine")) return(NA)
   if (has(name, paste0("Beer|\\bAle\\b|Lager|I\\.?P\\.?A|Stout|Porter|Bock|Cider|Radler|Hefe|Festbier|Oktoberfest|Brew|Vodka|\\bGin\\b|\\bRum\\b|Whisk|Bourbon|",
                        "Tequila|Mezcal|Liqueur|Cocktail|Margarita|Martini|Paloma|Cosmopolitan|Spritz|Amaro|Aperitivo|Sangria|Non-Alcoholic|Mulled|Gl.hwein|",
-                       "Wine Based|Flavored|Watermelon|Peach Wine|Love, Olivia|with Spices|Bartender|", SEASONAL))) return(NA)
+                       "Wine Based|Flavored|Watermelon|Peach Wine|Love, Olivia|with Spices|Bartender|White Zinfandel|Blush|Orange Wine|Frizzante|", SEASONAL))) return(NA)
   red <- has(name, "Red Wine|Pinot Noir|Cabernet|Merlot|Malbec|Syrah|Shiraz|Zinfandel|Meritage|Montepulciano|Nebbiolo|Chianti|Sangiovese|Tempranillo|Rioja|Bordeaux|Grenache|Garnacha|Barbera|Primitivo|Red Blend")
-  if (has(name, "\\bRos[e\u00e9]\\b") && !has(name, "Red Wine")) return("rose")
+  if (has(name, "\\bRos[e\u00e9](?!\\w)") && !has(name, "Red Wine")) return("rose")
   if (has(name, "Prosecco")) return("prosecco")
   if (has(name, "Cr[e\u00e9]mant|Champagne|\\bBrut\\b|Sparkling|Blanc de Blancs|\\bCava\\b")) return("cremant")
   if (has(name, "Sauvignon Blanc")) return("sauv")
@@ -92,7 +92,8 @@ wine_style <- function(name, cat) {
 cheese_style <- function(name, cat) {
   if (!has(cat, "Cheese") || has(cat, "Slices, Shreds, Crumbles")) return(NA)
   if (has(name, paste0("Slice|Shred|Grated|Crumbl|Snack|Spread|\\bDip\\b|Fondue|Paneer|Queso|Pizza|Bread Cheese|Cream Cheese|Ricotta|Mascarpone|",
-                       "Cr[e\u00e8]me Fra|String|Cottage|Whipped|Cheesecake|Vegan|Dairy-Free|Alternative|Tray|Cube|Rosette|Pearl|Cassata|Neufchatel|", SEASONAL))) return(NA)
+                       "Cr[e\u00e8]me Fra|String|Cottage|Whipped|Cheesecake|Vegan|Dairy-Free|Alternative|Tray|Cube|Rosette|Pearl|Cassata|Neufchatel|",
+                       "Blueberry|Taco|Ghost Pepper|Scotch Bonnet|Huntsman|Italian Truffle Cheese|", SEASONAL))) return(NA)
   rules <- c(stilton = "White Stilton|Wensleydale", blue = "Blue|Gorgonzola|Stilton|Cambozola|Roquefort|Bleu",
              gouda = "Gouda|Mimolette|Edam|Kaamt", brie = "Brie|Camembert|Triple Cr|Double Cr[e\u00e8]me|Soft Ripened|Saint Andr",
              goat = "Goat|Ch[e\u00e8]vre", fresh = "Mozzarella|Burrata", feta = "Feta",
@@ -137,7 +138,7 @@ addon_class <- function(name, cat) {
   }
   if (has(cat, "Nut Butters & Fruit Spreads|Honeys, Syrups|Condiments|Dressing & Seasoning|Dip/Spread") &&
       has(name, "Jam|Preserves|Fig Butter|Fruit Spread|Marmalade|Chutney|Honey|Mustard|Tapenade|Pesto|Quince|Membrillo|Jelly|Spreads for Chees") &&
-      !has(name, "Peanut|Almond Butter|Cashew|Sunflower|Cookie|Granola|Cocoa|Hazelnut|Syrup|Caramel|Chocolate|Hummus|Dressing|Popcorn|Ketchup|Mayo|Concord|Pasta|Simmer|BBQ|Salsa|Roasted|Cashews|Macadamia")) {
+      !has(name, "Peanut|Almond Butter|Cashew|Sunflower|Cookie|Granola|Cocoa|Hazelnut|Syrup|Caramel|Chocolate|Hummus|Dressing|Popcorn|Ketchup|Mayo|Concord|Pasta|Simmer|BBQ|Salsa|Roasted|Cashews|Macadamia|Yellow Mustard|Aioli")) {
     if (has(name, "Honey") && !has(name, "Mustard")) return(out("Spreads & condiments", "bowl:#e0a321::dipper", "sweet"))
     col <- if (has(name, "Mustard")) "#c9a227" else if (has(name, "Tapenade|Olive")) "#6a6a3a" else if (has(name, "Pesto")) "#5b8a3c" else
       if (has(name, "Chutney")) "#d98a1c" else if (has(name, "Fig")) "#5a2f3a" else if (has(name, "Apricot|Peach|Orange|Marmalade")) "#e5902d" else
@@ -153,7 +154,7 @@ addon_class <- function(name, cat) {
     return(out("Cured meats", icon, "salty"))
   }
   if (has(cat, "Packaged Fish, Meat, Fruit|Pickle") && has(name, "Olive|Cornichon|Pickle|Gherkin|Artichoke|Pepperoncini|Picant|Roasted Red Pepper|Pickled|Dolma|Caper") &&
-      !has(name, "Oil|Tuna|Sardine|Hummus|Tapenade|Spread|Chips|Popcorn|Tomato|Salad|Relish|Jalape")) {
+      !has(name, "Oil|Tuna|Sardine|Hummus|Tapenade|Spread|Chips|Popcorn|Tomato|Salad|Relish|Jalape|Sandwich")) {
     if (has(name, "Kalamata")) return(out("Olives & pickled", "bowl:#2a1f22:#4f2848:olive", "salty"))
     if (has(name, "Olive") && has(name, "Stuffed|Pimento")) return(out("Olives & pickled", "bowl:#2a1f22:#8aa03a:stuffed", "salty"))
     if (has(name, "Olive")) return(out("Olives & pickled", "bowl:#2a1f22:#7a8a3a:olive", "salty"))

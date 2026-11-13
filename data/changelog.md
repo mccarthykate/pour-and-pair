@@ -1,0 +1,105 @@
+# Trader Joe's catalog changes
+
+## Trader Joe's check, 2026-11-13
+
+### New items (94)
+- Nuts: 50% Less Sodium Roasted & Salted Whole Cashews
+- Nuts: A Trio of Almonds
+- Cheese (cheddar): Bacon Cheddar
+- Cheese (cheddar): Beehive Promontory Cheese
+- Cured meats: Bocconcino Uncured Salami on a Rope
+- Cheese (fresh): Burrata Filling
+- Fruit & veggies: California Slab Apricots
+- Fruit & veggies: Campari Tomatoes
+- Wine (redblend): Charles Shaw Merlot
+- Cheese (cheddar): Chive Cheddar Cheese
+- Crackers & bread: Ciabatta Demi-Baguette
+- Olives & pickled: Colossal Olives Stuffed with Garlic Cloves
+- Crackers & bread: Cracker Assortment
+- Dark chocolate: Dark Chocolate Bark
+- Dark chocolate: Dark Chocolate Bark with Pistachios, Dried Jalapeños & Sea Salt
+- Dark chocolate: Dark Chocolate Covered Cashews
+- Dark chocolate: Dark Chocolate Orange
+- Dark chocolate: Dark Chocolate Orange Sticks
+- Dark chocolate: Dark Chocolate Thins On the Go! No Sugar Added
+- Wine (cab): Diamond Reserve Cabernet Sauvignon Napa Valley 2023
+- Wine (cab): Diamond Reserve Cabernet Sauvignon Oakville Napa Valley 2020
+- Wine (cab): Diamond Reserve Cabernet Sauvignon Rutherford Napa Valley 2023
+- Spreads & condiments: Dijon Mustard
+- Spreads & condiments: Dill Pickle Mustard
+- Cheese (brie): Double Cream Brie
+- Crackers & bread: Elevated Cracker Assortment
+- Nuts: Elevated Nut Mix
+- Fruit & veggies: Extra Choice California Apricots
+- Fruit & veggies: Freeze Dried Apricots
+- Fruit & veggies: Freeze Dried Raspberries
+- Fruit & veggies: Freeze Dried Strawberries
+- Fruit & veggies: Freeze Dried Tart Cherries
+- Fruit & veggies: Fuyu Persimmons
+- Crackers & bread: Gluten Free Cranberry Raisin Toasts
+- Wine (cab): Grand Reserve Cabernet Sauvignon Alexander Valley Lot #117
+- Wine (cab): Grand Reserve Cabernet Sauvignon Napa Valley 2021 Lot #139
+- Cheese (gouda): Green Goddess Gouda
+- Olives & pickled: Grilled Pitted Green Olives
+- Nuts: Honey Roasted Macadamia Nuts & Cashews
+- Cured meats: IPA Beer Uncured Salami Bites
+- Cheese (cheddar): Irish Cheddar Cheese with Irish Whiskey
+- Cheese (cheddar): Ivy's Reserve Somerset Red Cheese
+- Cheese (gouda): Kaamté Gouda Style Cheese
+- Wine (cab): Lovely You Cabernet Sauvignon
+- Nuts: Maple Spiced Nut Mix
+- Olives & pickled: Medium Green Ripe Pitted Olives
+- Cured meats: Mini Uncured Salami Sticks
+- Wine (redblend): Moon X Dark Red Blend
+- Wine (cab): Napa Estates Cabernet Sauvignon 2022
+- Dark chocolate: Organic Dark Chocolate Bar with Almonds
+- Fruit & veggies: Organic Dried & Pitted Deglet Noor Dates
+- Fruit & veggies: Organic English Cucumber
+- Fruit & veggies: Organic Fuyu Persimmons
+- Crackers & bread: Organic Garlic Naan Crackers
+- Spreads & condiments: Organic Guava Fruit Spread
+- Fruit & veggies: Organic Persian Cucumbers
+- Fruit & veggies: Organic Pomegranate
+- Fruit & veggies: Organic Strawberries 1 Lb
+- Fruit & veggies: Organic Strawberries 2 Lb
+- Dark chocolate: Patislove® Pistachio Dark Chocolate Dubai Style
+- Crackers & bread: Phyllo Crisps
+- Wine (cab): Plat Rsv Cabernet Sauvignon Stags Leap District Napa Valley 2023
+- Wine (rose): Platinum Reserve Brut Rosé Napa Valley Sparkling Wine
+- Wine (rose): Platinum Reserve Brut Rosé Sonoma County
+- Wine (cab): Platinum Reserve Cabernet Sauvignon Yountville Napa Valley 2023
+- Dark chocolate: Premium Milk & Dark Chocolate Covered Almonds
+- Cured meats: Quite Possibly The World's Smallest Uncured Salami
+- Cheese (cheddar): Red Leicester Cheese
+- Cured meats: Reduced Sodium Italian Dry Uncured Salami
+- Wine (cab): Reserve Cabernet Sauvignon Alexander Valley 2020
+- Wine (redblend): Reserve Meritage Paso Robles 2021
+- Wine (redblend): Rose & Finch Callifornia Red Wine 2021
+- Cheese (cheddar): Sage Derby
+- Crackers & bread: Scalloped Cracker Trio
+- Cheese (cheddar): Smoked English Cheddar Cheese with Spring Onion & Chive
+- Cured meats: Soppressata Uncured Salami
+- Spreads & condiments: Spiced Cranberry Fruit Spread
+- Olives & pickled: Spicy & Sweet Picanté Peppers
+- Cheese (cheddar): Spicy Buffalo Cheddar
+- Olives & pickled: Spicy Kosher Dill Pickles
+- Cured meats: Spicy Uncured Charcuterie Collection
+- Fruit & veggies: Strawberries 2 Lb
+- Spreads & condiments: Strawberry Preserves made with Fresh Strawberries
+- Cheese (cheddar): Stripey Joe
+- Fruit & veggies: Sugar Bee® Apple
+- Fruit & veggies: Sugar Bee® Apples
+- Fruit & veggies: Sweet Baby Thompson Seedless Grapes
+- Cheese (stilton): Sweetheart White Stilton Cheese
+- Wine (redblend): TABLE California Red Wine
+- Fruit & veggies: Teeny Tiny Tomatoes
+- Dark chocolate: The Dark Chocolate Lover's Chocolate Bar
+- Wine (cab): Trading Post Cabernet Sauvignon of Napa Valley 2022
+- Crackers & bread: Trail Mix Crackers
+- Cheese (goat): Vanilla Cardona® Goat's Milk Cheese
+
+### Price changes (3)
+- Double Cream Gouda Cheese: $9.99 to $10.99
+- Cambozola® Triple Cream Cheese: $14.99 to $15.99
+- Strawberries 1 Lb: $4.99 to $5.49
+
